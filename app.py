@@ -184,11 +184,11 @@ if(CAPITAL and DURACIO and FREQUENCIA_PAGAMENT):
         arrodonit_style = arrodonit.style.format(decimal=",", thousands=".", precision=2)
 
         st.dataframe(arrodonit_style)
-        descarregar(False, arrodonit)
+        #descarregar(False, arrodonit)
         st.subheader("TAULA D'AMORTITZACIÓ REAL")
         real_style = real.style.format(decimal=",", thousands=".", precision=2)
         st.dataframe(real_style)
-        descarregar(True, real)
+        #descarregar(True, real)
 
         st.header("Resultats",divider="orange")
         total_int_real = round(real["INTERES"].sum(), 2)
