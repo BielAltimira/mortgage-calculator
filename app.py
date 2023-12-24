@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from io import BytesIO
 import locale
+
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 def custom_format(x):
@@ -32,17 +33,12 @@ def calcular_porcentajes_desde_pagado(capital_total, capital_pagado_intereses, c
 @st.cache_data(experimental_allow_widgets=True) 
 def descarregar(r: bool, df):
     if r:
-        # excel = real.to_excel("a.xlsx", index=False)
         excel_data = BytesIO()
-        # excel_data.write(excel.encode('utf-8'))
-        # excel_data = BytesIO()
         df.to_excel(excel_data, index=False, engine='openpyxl')
-        st.download_button(label="Descarregar taula real", data=excel_data, file_name="taula_real.xlsx", key='download_button')
+        st.download_button(label="Descarregar taula real", data=excel_data, file_name="taula_real.xlsx", key='download_button1')
+        
     else:
-        # excel = arrodonit.to_excel("a.xlsx", index=False)
-        # excel = real.to_excel("taula_arrodonida.xlsx", index=False)
         excel_data = BytesIO()
-        # excel_data.write(excel.encode('utf-8'))
         df.to_excel(excel_data, index=False, engine='openpyxl')
         st.download_button(label="Descarregar taula arrodonida", data=excel_data, file_name="taula_arrodonida.xlsx", key='download_button2')
 
@@ -143,21 +139,29 @@ st.subheader("Fitxer dels interessos")
 interessos_fitxer = st.file_uploader("Tria el fitxer", type="xlsx", key=1)
 if interessos_fitxer:
     INTERESSOS = pd.read_excel(interessos_fitxer, names=["DATA", "INTERES_REAL", "INTERES_ARRODONIT"], header=None, decimal=",")
+    INTERESSOS_styled = INTERESSOS.style.format({
+        "INTERES_REAL" : "{:.2f}",
+        "INTERES_ARRODONIT" : "{:.2f}"
+    }, thousands=".", decimal=",")
+
 
 st.subheader("Fitxer de les aportacions")
 aportacions_fitxer = st.file_uploader("Tria el fitxer", type="xlsx", key=2)
 if aportacions_fitxer:
     APORTACIONS = pd.read_excel(aportacions_fitxer, names=["DATA", "APORTACIÓ"], header=None, decimal=",")
+    APORTACIONS_styled = APORTACIONS.style.format({
+        "APORTACIÓ" : "{:.2f}"
+    }, thousands=".", decimal=",")
 
 if interessos_fitxer and aportacions_fitxer:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("INTERESSOS")
-        st.table(INTERESSOS)
+        st.dataframe(INTERESSOS_styled, hide_index=True, width=10000)
     with col2:
         st.subheader("APORTACIONS")
         ap_plot = pd.read_excel(aportacions_fitxer, names=["DATA", "APORTACIÓ"])
-        st.table(APORTACIONS)
+        st.dataframe(APORTACIONS_styled, hide_index=True, width=100000)
 
 st.header("Entra les variables", divider='orange')
 # CAPITAL = st.number_input("Capital a amortitzar", value=None, placeholder="Capital a amortitzar en €...")
@@ -176,10 +180,14 @@ if(CAPITAL and DURACIO and FREQUENCIA_PAGAMENT):
         arrodonit = generar_df(False) 
         real = generar_df(True) 
         st.subheader("TAULA D'AMORTITZACIÓ ARRODONIDA")
-        st.dataframe(arrodonit)
+
+        arrodonit_style = arrodonit.style.format(decimal=",", thousands=".", precision=2)
+
+        st.dataframe(arrodonit_style)
         descarregar(False, arrodonit)
         st.subheader("TAULA D'AMORTITZACIÓ REAL")
-        st.dataframe(real)
+        real_style = real.style.format(decimal=",", thousands=".", precision=2)
+        st.dataframe(real_style)
         descarregar(True, real)
 
         st.header("Resultats",divider="orange")
