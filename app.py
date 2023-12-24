@@ -133,6 +133,10 @@ def generar_df(r: bool) -> pd.DataFrame:
 st.title("Analitzador d'hipoteca :chart_with_upwards_trend:")
 
 st.header("Com funciona?", divider="orange")
+video_file = open('video.mp4', 'rb')
+video_bytes = video_file.read()
+st.video(video_bytes)
+
 st.header("Penja els fitxers necesaris", divider="orange")
 
 st.subheader("Fitxer dels interessos")
