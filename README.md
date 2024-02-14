@@ -33,4 +33,4 @@ Based on the project requirements, the following features can be found while usi
 
 This web-app uses the following open source packages:
 
-- [Streamlit](https://streamlit.io/)https://streamlit.io/)
+- [Streamlit](https://streamlit.io/)
