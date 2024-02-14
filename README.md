@@ -4,7 +4,7 @@
   <br>
 </h1>
 
-<h4 align="center"><a href="https://mortgage-calculator.streamlit.app/" target="_blank">Financial tool</a> to calculate loses due to the change of yearly interest rate.</h4>
+<h4 align="center"><a href="https://mortgage-calculator.streamlit.app/" target="_blank">Financial tool</a> to calculate losses due to the change of yearly interest rate.</h4>
 
 <br>
 <p align="center">
